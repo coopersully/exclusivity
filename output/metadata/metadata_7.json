@@ -1,0 +1,13 @@
+{
+  "attributes": [
+    {
+      "name": "Background",
+      "element": "Purple.png"
+    },
+    {
+      "name": "Character",
+      "element": "Alpha.png"
+    }
+  ],
+  "dna": "5524132b3c6588d49c1bb143f24585b2a98e9e22"
+}
