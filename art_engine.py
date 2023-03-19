@@ -33,10 +33,7 @@ def generate_art(layers, output_path, num_images):
     unique_variations = calculate_unique_variations(layers)
     if unique_variations < num_images:
         print(f"Warning: Requested {num_images} images, but only {unique_variations} unique variations are possible.")
-        proceed = input("Do you want to proceed? (yes/no): ")
-        if proceed.lower() != "yes":
-            print("Aborted.")
-            return
+        return
 
     generated_dna = set()
 
