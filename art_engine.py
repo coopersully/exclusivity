@@ -38,21 +38,30 @@ def generate_art(layers, output_path, num_images):
             print("Aborted.")
             return
 
+    generated_dna = set()
+
     for i in range(num_images):
-        composite = None
-        attributes = []
+        while True:
+            composite = None
+            attributes = []
 
-        for layer in layers:
-            elements = get_elements(layer["path"])
-            element = random.choice(elements)
-            img = Image.open(os.path.join(layer["path"], element)).convert("RGBA")
+            for layer in layers:
+                elements = get_elements(layer["path"])
+                element = random.choice(elements)
+                img = Image.open(os.path.join(layer["path"], element)).convert("RGBA")
 
-            attributes.append({"name": layer["name"], "element": element})
+                attributes.append({"name": layer["name"], "element": element})
 
-            if composite is None:
-                composite = Image.new("RGBA", img.size, (0, 0, 0, 0))
+                if composite is None:
+                    composite = Image.new("RGBA", img.size, (0, 0, 0, 0))
 
-            composite.alpha_composite(img)
+                composite.alpha_composite(img)
+
+            dna = generate_dna(attributes)
+
+            if dna not in generated_dna:
+                generated_dna.add(dna)
+                break
 
         renders_path = os.path.join(output_path, "renders")
         metadata_path = os.path.join(output_path, "metadata")
@@ -60,7 +69,6 @@ def generate_art(layers, output_path, num_images):
         os.makedirs(metadata_path, exist_ok=True)
         composite.save(os.path.join(renders_path, f"output_{i + 1}.png"))
 
-        dna = generate_dna(attributes)
         metadata = {"attributes": attributes, "dna": dna}
 
         with open(os.path.join(metadata_path, f"metadata_{i + 1}.json"), "w") as f:
@@ -69,5 +77,5 @@ def generate_art(layers, output_path, num_images):
 
 layers = load_layers_config("./config/layers.json")
 output_path = "output"
-num_images = 10
+num_images = 44
 generate_art(layers, output_path, num_images)
