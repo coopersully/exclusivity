@@ -12,6 +12,13 @@ metadata_path = os.path.join(output_path, "metadata")
 
 
 # Get predefined layers as a json object from layers.config
+def load_collections_config(file_path):
+    with open(file_path, "r") as f:
+        collections_config = json.load(f)
+    return collections_config
+
+
+# Get predefined layers as a json object from layers.config
 def load_layers_config(file_path):
     with open(file_path, "r") as f:
         layers_config = json.load(f)
@@ -39,16 +46,36 @@ def calculate_unique_variations(layers):
     return variations
 
 
+# Delete all files in a specified directory
+def remove_files_from_directory(directory):
+    for file in os.listdir(directory):
+        file_path = os.path.join(directory, file)
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+
+
 # Generate tokens with the current configurations
-def generate_art(layers):
+def generate_art(layers, collections_config):
     unique_variations = calculate_unique_variations(layers)
     if unique_variations < num_images:
         print(f"Warning: Requested {num_images} images, but only {unique_variations} unique variations are possible.")
         return
 
+    os.makedirs(renders_path, exist_ok=True)
+    os.makedirs(metadata_path, exist_ok=True)
+
+    if collections_config["purge_on_generate"]:
+        # Remove all files from output directories
+        print('Purging previous generative metadata and renders...')
+        remove_files_from_directory(renders_path)
+        remove_files_from_directory(metadata_path)
+
+    prefix = collections_config["name"]["prefix"]
+    suffix = collections_config["name"]["suffix"]
+
     generated_dna = set()
 
-    for i in range(num_images):
+    for edition in range(1, num_images + 1):
         while True:
             composite = None
             attributes = []
@@ -71,16 +98,16 @@ def generate_art(layers):
                 generated_dna.add(dna)
                 break
 
-        os.makedirs(renders_path, exist_ok=True)
-        os.makedirs(metadata_path, exist_ok=True)
-        composite.save(os.path.join(renders_path, f"output_{i + 1}.png"))
+        composite.save(os.path.join(renders_path, f"output_{edition}.png"))
 
-        metadata = {"attributes": attributes, "dna": dna}
+        token_name = prefix + str(edition) + suffix
+        metadata = {"name": token_name, "edition": edition, "dna": dna, "attributes": attributes}
 
-        with open(os.path.join(metadata_path, f"metadata_{i + 1}.json"), "w") as f:
+        with open(os.path.join(metadata_path, f"metadata_{edition}.json"), "w") as f:
             json.dump(metadata, f, indent=2)
 
 
 if __name__ == "__main__":
+    collections_config = load_collections_config("./config/collections.json")
     layers_config = load_layers_config("./config/layers.json")
-    generate_art(layers_config)
+    generate_art(layers_config, collections_config)

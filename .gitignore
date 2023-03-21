@@ -1,3 +1,4 @@
 .idea/*
 output/metadata/*
 output/renders/*
+.DS_Store
