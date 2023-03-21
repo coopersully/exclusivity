@@ -1,11 +1,13 @@
-import os
 import json
+import os
 import random
+import time
 from hashlib import sha1
+
 from PIL import Image
 
 # Configurable settings
-num_images = 44
+num_tokens = 44
 output_path = "output"
 renders_path = os.path.join(output_path, "renders")
 metadata_path = os.path.join(output_path, "metadata")
@@ -55,27 +57,33 @@ def remove_files_from_directory(directory):
 
 
 # Generate tokens with the current configurations
-def generate_art(layers, collections_config):
+def generate_art(layers, config):
     unique_variations = calculate_unique_variations(layers)
-    if unique_variations < num_images:
-        print(f"Warning: Requested {num_images} images, but only {unique_variations} unique variations are possible.")
+    if unique_variations < num_tokens:
+        print(f"[ERROR] Requested {num_tokens} images, but only {unique_variations} unique variations are possible.")
         return
 
+    # Make build directories if they don't exist
     os.makedirs(renders_path, exist_ok=True)
     os.makedirs(metadata_path, exist_ok=True)
 
-    if collections_config["purge_on_generate"]:
-        # Remove all files from output directories
-        print('Purging previous generative metadata and renders...')
+    # Remove all files from output directories
+    if config["purge_on_generate"]:
+        print('[PRE] Purging previous generative metadata and renders...')
         remove_files_from_directory(renders_path)
         remove_files_from_directory(metadata_path)
+        print('[PRE] Purging previous generative metadata and renders... Done!')
 
-    prefix = collections_config["name"]["prefix"]
-    suffix = collections_config["name"]["suffix"]
+    # Retrieve configured prefix and suffix
+    prefix = config["name"]["prefix"]
+    suffix = config["name"]["suffix"]
 
+    # Create a new set of existing dna strands for unique-ensurance
     generated_dna = set()
 
-    for edition in range(1, num_images + 1):
+    # Generate specified number of tokens
+    for edition in range(1, num_tokens + 1):
+        # Re-render image until completely unique
         while True:
             composite = None
             attributes = []
@@ -98,16 +106,32 @@ def generate_art(layers, collections_config):
                 generated_dna.add(dna)
                 break
 
+        # Save render to png
         composite.save(os.path.join(renders_path, f"{edition}.png"))
 
-        token_name = prefix + str(edition) + suffix
-        metadata = {"name": token_name, "edition": edition, "dna": dna, "attributes": attributes}
-
+        # Save metadata to json
+        metadata = {
+            "name": f'{prefix}{edition}{suffix}',
+            "edition": edition,
+            "dna": dna,
+            "attributes": attributes
+        }
         with open(os.path.join(metadata_path, f"{edition}.json"), "w") as f:
             json.dump(metadata, f, indent=2)
 
+        # Alert console
+        print(f'[GEN] Successfully generated token {edition}/{num_tokens}.')
+
 
 if __name__ == "__main__":
+    start_time = time.time_ns()
+
+    # Load config files
     collections_config = load_collections_config("./config/collections.json")
     layers_config = load_layers_config("./config/layers.json")
+
+    # Generate collection
     generate_art(layers_config, collections_config)
+
+    end_time = time.time_ns()
+    print(f'Generation completed in {(end_time - start_time) / 1000000000}s')
