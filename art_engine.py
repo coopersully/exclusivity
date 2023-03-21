@@ -98,12 +98,12 @@ def generate_art(layers, collections_config):
                 generated_dna.add(dna)
                 break
 
-        composite.save(os.path.join(renders_path, f"output_{edition}.png"))
+        composite.save(os.path.join(renders_path, f"{edition}.png"))
 
         token_name = prefix + str(edition) + suffix
         metadata = {"name": token_name, "edition": edition, "dna": dna, "attributes": attributes}
 
-        with open(os.path.join(metadata_path, f"metadata_{edition}.json"), "w") as f:
+        with open(os.path.join(metadata_path, f"{edition}.json"), "w") as f:
             json.dump(metadata, f, indent=2)
 
 
