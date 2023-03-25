@@ -1,9 +1,10 @@
+import json
 import random
 import time
 
 from PIL import Image
 
-from Token import Token
+from models.Token import Token
 from utils import *
 
 output_path = "output"

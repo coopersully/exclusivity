@@ -1,10 +1,9 @@
-import json
 import yaml
 import os
 from hashlib import sha1
 
-from Collection import Collection
-from Layer import Layer
+from models.Collection import Collection
+from models.Layer import Layer
 
 
 def load_collections_config(file_path):

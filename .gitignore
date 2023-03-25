@@ -2,4 +2,5 @@
 output/metadata/*
 output/renders/*
 __pycache__/*
+*/__pycache__
 .DS_Store
