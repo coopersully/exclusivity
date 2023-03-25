@@ -15,10 +15,10 @@ tokens: 44
 name:
     # What should each token's name be prefixed with?
     # Leave this field blank to not prefix names.
-    "prefix": "Sample Collection #"
+    prefix: "Sample Collection #"
     # What should each token's name be suffixed with?
     # Leave this field blank to not suffix names.
-    "suffix": ""
+    suffix: ""
 
 # Should the output directory should be cleared before generating new tokens?
 purge_on_generate: true
