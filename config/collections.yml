@@ -1,0 +1,27 @@
+#   _   _     _   _     ___      ___      _   _     ___     _____    __   __
+#  | | | |   | \ | |   |_ _|    / _ \    | | | |   |_ _|   |_   _|   \ \ / /
+#  | | | |   |  \| |    | |    | | | |   | | | |    | |      | |      \ V /
+#  | |_| |   | |\  |    | |    | |_| |   | |_| |    | |      | |       | |
+#   \___/    |_| \_|   |___|    \__\_\    \___/    |___|     |_|       |_|
+#
+# Uniquity Art Engine - Collection Settings
+#
+# This file contains high-level settings for the entire NFT collection.
+
+# How many tokens should we generate for the collection?
+tokens: 44
+
+# How should each token's name be formatted in their corresponding metadata files?
+name:
+    # What should each token's name be prefixed with?
+    # Leave this field blank to not prefix names.
+    "prefix": "Sample Collection #"
+    # What should each token's name be suffixed with?
+    # Leave this field blank to not suffix names.
+    "suffix": ""
+
+# Should the output directory should be cleared before generating new tokens?
+purge_on_generate: true
+
+# Should metadata files include image extensions in their layer details?
+strip_extensions: true

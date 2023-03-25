@@ -1,4 +1,5 @@
 import json
+import yaml
 import os
 from hashlib import sha1
 
@@ -8,19 +9,19 @@ from Layer import Layer
 
 def load_collections_config(file_path):
     with open(file_path, "r") as f:
-        config_json = json.load(f)
-    name = config_json["name"]
-    prefix = name["prefix"]
-    suffix = name["suffix"]
-    purge_on_generate = config_json["purge_on_generate"]
-    strip_extensions = config_json["strip_extensions"]
-    return Collection(name, purge_on_generate, prefix, suffix, strip_extensions)
+        config = yaml.safe_load(f)
+    name = config["name"]
+    purge_on_generate = config["purge_on_generate"]
+    strip_extensions = config["strip_extensions"]
+    num_tokens = config["tokens"]
+    return Collection(name, purge_on_generate, strip_extensions, num_tokens)
 
 
 def load_layers_config(file_path):
     with open(file_path, "r") as f:
-        config_json = json.load(f)
-    return [Layer(**layer) for layer in config_json]
+        config = yaml.safe_load(f)
+    return [Layer(**layer) for layer in config["layers"]]
+
 
 
 def get_images_in_dir(layer_path):

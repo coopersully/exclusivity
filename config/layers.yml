@@ -1,0 +1,22 @@
+#   _   _     _   _     ___      ___      _   _     ___     _____    __   __
+#  | | | |   | \ | |   |_ _|    / _ \    | | | |   |_ _|   |_   _|   \ \ / /
+#  | | | |   |  \| |    | |    | | | |   | | | |    | |      | |      \ V /
+#  | |_| |   | |\  |    | |    | |_| |   | |_| |    | |      | |       | |
+#   \___/    |_| \_|   |___|    \__\_\    \___/    |___|     |_|       |_|
+#
+# Uniquity Art Engine - Layers Configuration
+#
+# This file contains a list of layers that will be used to generate images.
+#
+# To add a new layer, append a dictionary to the `layers` list with the following keys:
+# - `name`: The name of the layer that will appear in the token's metadata (required)
+# - `path`: The local file path to the layer images (required)
+#
+# The layers will be stacked in the order that they appear in the `layers` list,
+# with the first layer at the bottom and the last layer at the top.
+# Therefore, the order of the layers is important and should be considered when adding new layers.
+layers:
+  - name: "Background"
+    path: "assets/backgrounds/"
+  - name: "Character"
+    path: "assets/characters/"

@@ -1,7 +1,7 @@
 class Collection:
-    def __init__(self, name, purge_on_generate, prefix, suffix, strip_extensions):
-        self.name = name
-        self.purge_on_generate = purge_on_generate
-        self.prefix = prefix
-        self.suffix = suffix
-        self.strip_extensions = strip_extensions
+    def __init__(self, name, purge_on_generate, strip_extensions, num_tokens):
+        self.purge_on_generate: bool = purge_on_generate
+        self.prefix: str = name["prefix"]
+        self.suffix: str = name["suffix"]
+        self.strip_extensions: bool = strip_extensions
+        self.num_tokens: int = num_tokens

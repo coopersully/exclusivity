@@ -6,16 +6,14 @@ from PIL import Image
 from Token import Token
 from utils import *
 
-num_tokens = 44
 output_path = "output"
 renders_path = os.path.join(output_path, "renders")
 metadata_path = os.path.join(output_path, "metadata")
 
-
 def generate_art(layers, config):
     unique_variations = calculate_unique_variations(layers)
-    if unique_variations < num_tokens:
-        print(f"[ERROR] Requested {num_tokens} images, but only {unique_variations} unique variations are possible.")
+    if unique_variations < config.num_tokens:
+        print(f"[ERROR] Requested {config.num_tokens} images, but only {unique_variations} unique variations are possible.")
         return
 
     os.makedirs(renders_path, exist_ok=True)
@@ -29,7 +27,7 @@ def generate_art(layers, config):
 
     generated_dna = set()
 
-    for edition in range(1, num_tokens + 1):
+    for edition in range(1, config.num_tokens + 1):
         while True:
             composite = None
             attributes = []
@@ -64,14 +62,14 @@ def generate_art(layers, config):
         with open(os.path.join(metadata_path, f"{edition}.json"), "w") as f:
             json.dump(token.__dict__, f, indent=2)
 
-        print(f'[GEN] Successfully generated token {edition}/{num_tokens}.')
+        print(f'[GEN] Successfully generated token {edition}/{config.num_tokens}.')
 
 
 if __name__ == "__main__":
     start_time = time.time_ns()
 
-    collections_config = load_collections_config("./config/collections.json")
-    layers_config = load_layers_config("./config/layers.json")
+    collections_config = load_collections_config("./config/collections.yml")
+    layers_config = load_layers_config("config/layers.yml")
 
     generate_art(layers_config, collections_config)
 
