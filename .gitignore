@@ -1,4 +1,5 @@
 .idea/*
 output/metadata/*
 output/renders/*
+__pycache__/*
 .DS_Store

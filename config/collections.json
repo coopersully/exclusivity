@@ -3,5 +3,6 @@
     "prefix": "Cooper's Sample Collection #",
     "suffix": " of many."
   },
-  "purge_on_generate": true
+  "purge_on_generate": true,
+  "strip_extensions": true
 }
