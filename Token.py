@@ -4,3 +4,4 @@ class Token:
         self.edition = edition
         self.dna = dna
         self.attributes = attributes
+        self.compiler = "Uniquity Art Engine"

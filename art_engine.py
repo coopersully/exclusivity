@@ -10,10 +10,12 @@ output_path = "output"
 renders_path = os.path.join(output_path, "renders")
 metadata_path = os.path.join(output_path, "metadata")
 
+
 def generate_art(layers, config):
     unique_variations = calculate_unique_variations(layers)
     if unique_variations < config.num_tokens:
-        print(f"[ERROR] Requested {config.num_tokens} images, but only {unique_variations} unique variations are possible.")
+        print(
+            f"[ERROR] Requested {config.num_tokens} images, but only {unique_variations} unique variations are possible.")
         return
 
     os.makedirs(renders_path, exist_ok=True)
